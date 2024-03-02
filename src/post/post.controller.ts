@@ -18,10 +18,10 @@ export class PostController {
     return await this.postService.create(createPostDto, user)
   }
 
-  // @Get()
-  // findAll () {
-  //   return this.postService.findAll()
-  // }
+  @Get()
+  async findAll () {
+    return await this.postService.findAll()
+  }
 
   // @Get(':id')
   // findOne (@Param('id') id: string) {

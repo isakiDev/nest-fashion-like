@@ -9,6 +9,7 @@ services:
     environment:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
+      TZ: 'America/Santiago'
     container_name: postgre
     volumes:
       - ./postgres:/var/lib/postgresql/data

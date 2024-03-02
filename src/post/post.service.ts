@@ -16,8 +16,6 @@ export class PostService {
   ) {}
 
   async create (createPostDto: CreatePostDto, user: User) {
-    console.log(user)
-
     const post = this.postRespository.create({
       ...createPostDto,
       user
@@ -25,11 +23,22 @@ export class PostService {
 
     await this.postRespository.save(post)
 
-    return post
+    const { user: userData, ...postData } = post
+
+    return {
+      post: postData,
+      user: userData
+    }
   }
 
-  findAll () {
-    return 'This action returns all post'
+  async findAll () {
+    const posts = await this.postRespository.find()
+
+    return posts.map(({ user, like, ...post }) => ({
+      user,
+      like,
+      post
+    }))
   }
 
   findOne (id: number) {

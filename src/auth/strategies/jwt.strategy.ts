@@ -23,12 +23,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate ({ id }: IJwtPayload) {
-    console.log(id)
     const user = await this.userRepository.findOneBy({ id })
 
     if (!user) throw new UnauthorizedException('Token not valid')
     if (!user.isActive) throw new UnauthorizedException('User is inactive')
-    if (!user.emailVerifiedAt) throw new UnauthorizedException('Unveried user')
+    if (!user.emailVerified) throw new UnauthorizedException('Unveried user')
 
     return user
   }

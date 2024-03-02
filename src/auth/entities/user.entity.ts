@@ -24,11 +24,11 @@ export class User {
   @IsString()
     password: string
 
-  @Column('text', {
-    default: null
+  @Column('bool', {
+    default: false
   })
-  @IsString()
-  readonly emailVerifiedAt?: string
+  @IsBoolean()
+  readonly emailVerified?: boolean
 
   @Column('bool', {
     default: true
@@ -48,14 +48,14 @@ export class User {
   @IsString()
   readonly image?: string
 
-  @Column('date', {
-    default: new Date().toDateString()
+  @Column('timestamp', {
+    default: () => 'CURRENT_TIMESTAMP'
   })
   @IsDate()
-  readonly createdAt?: Date
+    createdAt?: Date
 
-  @Column('date', {
-    default: new Date().toDateString()
+  @Column('timestamp', {
+    default: () => 'CURRENT_TIMESTAMP'
   })
   @IsDate()
   readonly updatedAt?: Date

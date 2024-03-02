@@ -22,14 +22,14 @@ export class Post {
   @IsString()
   readonly image?: string
 
-  @Column('date', {
-    default: new Date().toDateString()
+  @Column('timestamp', {
+    default: () => 'CURRENT_TIMESTAMP'
   })
   @IsDate()
   readonly createdAt?: Date
 
-  @Column('date', {
-    default: new Date().toDateString()
+  @Column('timestamp', {
+    default: () => 'CURRENT_TIMESTAMP'
   })
   @IsDate()
   readonly updatedAt?: Date
