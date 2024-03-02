@@ -28,7 +28,7 @@ export class User {
     default: null
   })
   @IsString()
-  readonly email_verified_at?: string
+  readonly emailVerifiedAt?: string
 
   @Column('bool', {
     default: true
@@ -52,13 +52,13 @@ export class User {
     default: new Date().toDateString()
   })
   @IsDate()
-  readonly created_at?: Date
+  readonly createdAt?: Date
 
   @Column('date', {
     default: new Date().toDateString()
   })
   @IsDate()
-  readonly updated_at?: Date
+  readonly updatedAt?: Date
 
   @OneToMany(
     () => Post,

@@ -12,13 +12,13 @@ export class Like {
     default: new Date().toDateString()
   })
   @IsDate()
-  readonly created_at?: Date
+  readonly createdAt?: Date
 
   @Column('date', {
     default: new Date().toDateString()
   })
   @IsDate()
-  readonly updated_at?: Date
+  readonly updatedAt?: Date
 
   @ManyToOne(
     () => User,
