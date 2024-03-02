@@ -6,8 +6,9 @@ import { Repository } from 'typeorm'
 
 import { User } from './entities/user.entity'
 import { BcryptAdapter } from '../common/adapters/bcrypt.adapter'
-import { type LoginUserDto, type CreateUserDto } from './dto'
+import { type LoginUserDto, type CreateUserDto, type UpdateUserDto } from './dto'
 import { type IJwtPayload } from './interfaces'
+import { type PaginationDto } from 'src/common/dtos/pagination.dto'
 
 @Injectable()
 export class AuthService {
@@ -57,6 +58,19 @@ export class AuthService {
       token: this.getJwt({ id: user.id })
     }
   }
+
+  async findAll (paginationDto: PaginationDto) {
+    const { limit = 5, offset = 0 } = paginationDto
+
+    return await this.userRepository.find({
+      take: limit,
+      skip: offset
+    })
+  }
+
+  // async update (updateUserDto: UpdateUserDto) {
+  //   const user = this.userRepository.update()
+  // }
 
   private getJwt (payload: IJwtPayload) {
     const token = this.jwtService.sign(payload)

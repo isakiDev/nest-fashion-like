@@ -1,7 +1,9 @@
-import { Body, Controller, Post } from '@nestjs/common'
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common'
 
 import { AuthService } from './auth.service'
-import { CreateUserDto, LoginUserDto } from './dto'
+import { CreateUserDto, LoginUserDto, UpdateUserDto } from './dto'
+import { AuthGuard } from '@nestjs/passport'
+import { PaginationDto } from 'src/common/dtos/pagination.dto'
 
 @Controller('auth')
 export class AuthController {
@@ -19,5 +21,20 @@ export class AuthController {
   @Body() loginUserDto: LoginUserDto
   ) {
     return await this.authService.login(loginUserDto)
+  }
+
+  // @Post('')
+  // async updateUser (
+  // @Body() updateUserDto: UpdateUserDto
+  // ) {
+  //   await this.authService.update()
+  // }
+
+  @Get()
+  @UseGuards(AuthGuard())
+  async getUsers (
+  @Query() paginationDto: PaginationDto
+  ) {
+    return await this.authService.findAll(paginationDto)
   }
 }
