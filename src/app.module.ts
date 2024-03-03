@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { AuthModule } from './auth/auth.module'
 import { PostModule } from './post/post.module'
+import { LikeModule } from './like/like.module';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { PostModule } from './post/post.module'
       synchronize: true
     }),
     AuthModule,
-    PostModule
+    PostModule,
+    LikeModule
   ]
 })
 export class AppModule {}
