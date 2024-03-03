@@ -46,11 +46,11 @@ export class Post {
     () => Like,
     (likes) => likes.post
   )
-    likes: Like
+    likes: Like[]
 
   @OneToMany(
     () => Comment,
     (comments) => comments.post
   )
-    comments: Comment
+    comments: Comment[]
 }
