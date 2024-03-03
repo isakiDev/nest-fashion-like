@@ -9,10 +9,8 @@ export class Comment {
   @PrimaryGeneratedColumn('increment')
   readonly id: number
 
-  @Column('text', {
-    default: ''
-  })
-  readonly comment?: string
+  @Column('text')
+  readonly comment: string
 
   @Column('timestamp', {
     default: () => 'CURRENT_TIMESTAMP'
