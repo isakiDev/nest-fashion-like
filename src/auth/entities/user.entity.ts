@@ -1,7 +1,8 @@
 import { IsBoolean, IsDate, IsString } from 'class-validator'
-import { Like } from 'src/post/entities'
-import { Post } from 'src/post/entities/post.entity'
 import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, OneToMany } from 'typeorm'
+
+import { Like } from '../../like/entities/like.entity'
+import { Post } from '../../post/entities/post.entity'
 
 @Entity('users')
 export class User {
@@ -34,7 +35,7 @@ export class User {
     default: true
   })
   @IsBoolean()
-  readonly isActive?: boolean
+    isActive?: boolean
 
   @Column('text', {
     array: true,

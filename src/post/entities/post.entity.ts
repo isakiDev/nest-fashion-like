@@ -1,7 +1,8 @@
 import { IsDate, IsString } from 'class-validator'
-import { User } from 'src/auth/entities/user.entity'
-import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
-import { Like } from './like.entity'
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+
+import { User } from '../../auth/entities/user.entity'
+import { Like } from '../../like/entities/like.entity'
 
 @Entity('posts')
 export class Post {

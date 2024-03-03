@@ -1,17 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common'
+import { Controller, Get, Post, Body, UseGuards, Query } from '@nestjs/common'
 import { PostService } from './post.service'
 import { CreatePostDto } from './dto'
 import { GetUser } from 'src/auth/decorators'
 import { User } from 'src/auth/entities/user.entity'
 import { AuthGuard } from '@nestjs/passport'
+import { PaginationDto } from 'src/common/dtos/pagination.dto'
 
 @Controller('post')
 export class PostController {
   constructor (private readonly postService: PostService) {}
 
+  // TODO: add image to upload
   @Post()
   @UseGuards(AuthGuard())
-  async create (
+  async createPost (
   @Body() createPostDto: CreatePostDto,
     @GetUser() user: User
   ) {
@@ -19,8 +21,10 @@ export class PostController {
   }
 
   @Get()
-  async findAll () {
-    return await this.postService.findAll()
+  async findAll (
+  @Query() paginationDto: PaginationDto
+  ) {
+    return await this.postService.findAll(paginationDto)
   }
 
   // @Get(':id')

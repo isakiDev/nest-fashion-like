@@ -4,9 +4,9 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
 
 import { type CreatePostDto } from './dto/create-post.dto'
-import { type UpdatePostDto } from './dto/update-post.dto'
 import { type User } from '../auth/entities/user.entity'
 import { Post } from './entities/post.entity'
+import { type PaginationDto } from '../common/dtos/pagination.dto'
 
 @Injectable()
 export class PostService {
@@ -21,35 +21,29 @@ export class PostService {
       user
     })
 
-    await this.postRespository.save(post)
-
-    const { user: userData, ...postData } = post
-
-    return {
-      post: postData,
-      user: userData
-    }
+    return await this.postRespository.save(post)
   }
 
-  async findAll () {
-    const posts = await this.postRespository.find()
+  async findAll (paginationDto: PaginationDto) {
+    const { limit = 5, offset = 0 } = paginationDto
 
-    return posts.map(({ user, like, ...post }) => ({
-      user,
-      like,
-      post
-    }))
+    const posts = await this.postRespository.find({
+      take: limit,
+      skip: offset
+    })
+
+    return posts
   }
 
-  findOne (id: number) {
-    return `This action returns a #${id} post`
-  }
+  // findOne (id: number) {
+  //   return `This action returns a #${id} post`
+  // }
 
-  update (id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`
-  }
+  // update (id: number, updatePostDto: UpdatePostDto) {
+  //   return `This action updates a #${id} post`
+  // }
 
-  remove (id: number) {
-    return `This action removes a #${id} post`
-  }
+  // remove (id: number) {
+  //   return `This action removes a #${id} post`
+  // }
 }

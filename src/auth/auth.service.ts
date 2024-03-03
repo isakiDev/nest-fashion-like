@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common'
+import { BadRequestException, ForbiddenException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { JwtService } from '@nestjs/jwt'
 
@@ -8,7 +8,7 @@ import { User } from './entities/user.entity'
 import { BcryptAdapter } from '../common/adapters/bcrypt.adapter'
 import { type LoginUserDto, type CreateUserDto, type UpdateUserDto } from './dto'
 import { type IJwtPayload } from './interfaces'
-import { type PaginationDto } from 'src/common/dtos/pagination.dto'
+import { type PaginationDto } from '../common/dtos/pagination.dto'
 
 @Injectable()
 export class AuthService {
@@ -46,12 +46,15 @@ export class AuthService {
 
     const user = await this.userRepository.findOne({
       where: { email },
-      select: { id: true, email: true, password: true }
+      select: { id: true, email: true, password: true, isActive: true, emailVerified: true }
     })
 
     if (!user) throw new UnauthorizedException('Credentials are not valid')
-
+    if (!user.isActive) throw new ForbiddenException('User is inactive')
+    if (!user.emailVerified) throw new ForbiddenException('User unverified')
     if (!BcryptAdapter.compareSync(password, user.password)) throw new UnauthorizedException('Credentials are not valid')
+
+    delete user.password
 
     return {
       ...user,
@@ -68,9 +71,37 @@ export class AuthService {
     })
   }
 
-  // async update (updateUserDto: UpdateUserDto) {
-  //   const user = this.userRepository.update()
-  // }
+  async findOne (id: string) {
+    const user = await this.userRepository.findOneBy({ id, isActive: true })
+
+    if (!user) throw new NotFoundException(`User with id ${id} not found`)
+
+    return user
+  }
+
+  async remove (id: string) {
+    const user = await this.findOne(id)
+    await this.userRepository.remove(user)
+  }
+
+  async update (id: string, updateUserDto: UpdateUserDto) {
+    const { password } = updateUserDto
+
+    if (password) {
+      updateUserDto.password = BcryptAdapter.hashSync(password, 10)
+    }
+
+    const user = await this.userRepository.preload({
+      id,
+      ...updateUserDto
+    })
+
+    if (!user.isActive) throw new ForbiddenException('User is inactive')
+
+    const { password: newPassword, ...newData } = await this.userRepository.save(user)
+
+    return newData
+  }
 
   private getJwt (payload: IJwtPayload) {
     const token = this.jwtService.sign(payload)
