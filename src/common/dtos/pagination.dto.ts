@@ -4,11 +4,11 @@ import { Type } from 'class-transformer'
 export class PaginationDto {
   @IsOptional()
   @IsPositive()
+  @Min(5)
   @Type(() => Number)
   readonly limit?: number
 
   @IsOptional()
-  @Min(5)
   @Type(() => Number)
   readonly offset?: number
 }

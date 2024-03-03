@@ -21,7 +21,8 @@ export class PostController {
   }
 
   @Get()
-  async findAll (
+  @UseGuards(AuthGuard())
+  async findPosts (
   @Query() paginationDto: PaginationDto
   ) {
     return await this.postService.findAll(paginationDto)

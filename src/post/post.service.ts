@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { Repository } from 'typeorm'
@@ -35,9 +35,13 @@ export class PostService {
     return posts
   }
 
-  // findOne (id: number) {
-  //   return `This action returns a #${id} post`
-  // }
+  async findOne (id: number) {
+    const post = await this.postRespository.findOneBy({ id })
+
+    if (!post) throw new NotFoundException(`Post with id ${id} not found`)
+
+    return post
+  }
 
   // update (id: number, updatePostDto: UpdatePostDto) {
   //   return `This action updates a #${id} post`

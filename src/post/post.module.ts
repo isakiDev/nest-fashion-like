@@ -12,6 +12,9 @@ import { AuthModule } from '../auth/auth.module'
   imports: [
     TypeOrmModule.forFeature([Post]),
     AuthModule
+  ],
+  exports: [
+    PostService
   ]
 })
 export class PostModule {}
