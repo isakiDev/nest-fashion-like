@@ -29,7 +29,12 @@ export class PostService {
 
     const posts = await this.postRespository.find({
       take: limit,
-      skip: offset
+      skip: offset,
+      relations: ['user', 'like', 'like.user'],
+      select: {
+        user: { id: true, name: true },
+        like: { id: true, user: { id: true, name: true } }
+      }
     })
 
     return posts

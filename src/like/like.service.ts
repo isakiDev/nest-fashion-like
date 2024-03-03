@@ -18,10 +18,7 @@ export class LikeService {
   async create (postId: number, user: User) {
     const post = await this.postService.findOne(postId)
 
-    const like = this.likeRepository.create({
-      user,
-      post
-    })
+    const like = this.likeRepository.create({ user, post })
 
     await this.likeRepository.save(like)
   }

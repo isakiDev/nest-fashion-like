@@ -37,15 +37,13 @@ export class Post {
 
   @ManyToOne(
     () => User,
-    (user) => user.id,
-    { eager: true }
+    (user) => user.id
   )
     user: User
 
   @OneToMany(
     () => Like,
-    (like) => like.post,
-    { eager: true }
+    (like) => like.post
   )
     like: Like
 }
