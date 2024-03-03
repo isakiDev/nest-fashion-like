@@ -3,6 +3,7 @@ import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'ty
 
 import { User } from '../../auth/entities/user.entity'
 import { Like } from '../../like/entities/like.entity'
+import { Comment } from 'src/comment/entities/comment.entity'
 
 @Entity('posts')
 export class Post {
@@ -46,4 +47,10 @@ export class Post {
     (like) => like.post
   )
     like: Like
+
+  @OneToMany(
+    () => Comment,
+    (comment) => comment.post
+  )
+    comment: Comment
 }

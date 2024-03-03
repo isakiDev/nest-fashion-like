@@ -3,6 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, One
 
 import { Like } from '../../like/entities/like.entity'
 import { Post } from '../../post/entities/post.entity'
+import { Comment } from 'src/comment/entities/comment.entity'
 
 @Entity('users')
 export class User {
@@ -72,6 +73,12 @@ export class User {
     (like) => like.user
   )
     like: Like
+
+  @OneToMany(
+    () => Comment,
+    (comment) => comment.user
+  )
+    comment: Comment
 
   @BeforeInsert()
   checkFieldsInsert () {
