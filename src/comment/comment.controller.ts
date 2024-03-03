@@ -1,8 +1,9 @@
 import { Body, Controller, Param, ParseIntPipe, Post, UseGuards } from '@nestjs/common'
-import { CommentService } from './comment.service'
 import { AuthGuard } from '@nestjs/passport'
-import { GetUser } from 'src/auth/decorators'
-import { User } from 'src/auth/entities/user.entity'
+
+import { CommentService } from './comment.service'
+import { GetUser } from '../auth/decorators'
+import { User } from '../auth/entities/user.entity'
 import { CreateCommentDto } from './dtos/create-comment.dto'
 
 @Controller('comment')

@@ -1,4 +1,4 @@
-import { Controller, Param, ParseIntPipe, Post, UseGuards } from '@nestjs/common'
+import { Controller, Delete, Param, ParseIntPipe, Post, UseGuards } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 
 import { LikeService } from './like.service'
@@ -16,5 +16,14 @@ export class LikeController {
     @GetUser() user: User
   ) {
     await this.likeService.create(postId, user)
+  }
+
+  @Delete('/:postId')
+  @UseGuards(AuthGuard())
+  async deleteLike (
+  @Param('postId', ParseIntPipe) postId: number,
+    @GetUser() user: User
+  ) {
+    await this.likeService.remove(postId, user)
   }
 }

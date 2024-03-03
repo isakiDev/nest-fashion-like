@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { Repository } from 'typeorm'
@@ -21,5 +21,17 @@ export class LikeService {
     const like = this.likeRepository.create({ user, post })
 
     await this.likeRepository.save(like)
+  }
+
+  // TODO: fix method find like
+  async remove (postId: number, user: User) {
+    const post = await this.postService.findOne(postId)
+
+    const like = await this.likeRepository.findOneBy({ id: 14 })
+    console.log(like)
+
+    if (!like) throw new NotFoundException('Like not found')
+
+    await this.likeRepository.remove(like)
   }
 }
