@@ -30,7 +30,7 @@ export class User {
     default: false
   })
   @IsBoolean()
-  readonly emailVerified?: boolean
+    emailVerified?: boolean
 
   @Column('bool', {
     default: true
@@ -44,8 +44,9 @@ export class User {
   })
   readonly roles?: string[]
 
+  // TODO: load url from .env
   @Column('text', {
-    default: 'default.jpg'
+    default: 'https://res.cloudinary.com/dzn3nempv/image/upload/v1709931089/fashion-like/users/smtcqxhlfpqjqwbeqvf4.png'
   })
   @IsString()
   readonly image?: string

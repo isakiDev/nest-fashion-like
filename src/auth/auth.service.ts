@@ -46,15 +46,18 @@ export class AuthService {
 
     const user = await this.userRepository.findOne({
       where: { email },
-      select: { id: true, name: true, email: true, password: true, isActive: true, emailVerified: true }
+      select: { id: true, name: true, email: true, password: true, emailVerified: true, isActive: true, image: true }
     })
 
     if (!user) throw new UnauthorizedException('Credentials are not valid')
+    if (!BcryptAdapter.compareSync(password, user.password)) throw new UnauthorizedException('Credentials are not valid')
     if (!user.isActive) throw new ForbiddenException('User is inactive')
     if (!user.emailVerified) throw new ForbiddenException('User unverified')
-    if (!BcryptAdapter.compareSync(password, user.password)) throw new UnauthorizedException('Credentials are not valid')
 
+    // TODO: refactor isActive
     delete user.password
+    delete user.isActive
+    delete user.emailVerified
 
     return {
       ...user,
