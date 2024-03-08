@@ -46,7 +46,7 @@ export class AuthService {
 
     const user = await this.userRepository.findOne({
       where: { email },
-      select: { id: true, email: true, password: true, isActive: true, emailVerified: true }
+      select: { id: true, name: true, email: true, password: true, isActive: true, emailVerified: true }
     })
 
     if (!user) throw new UnauthorizedException('Credentials are not valid')
@@ -106,6 +106,15 @@ export class AuthService {
   private getJwt (payload: IJwtPayload) {
     const token = this.jwtService.sign(payload)
     return token
+  }
+
+  checkAuthStatus (user: User) {
+    const { id, name } = user
+
+    return {
+      user: { id, name },
+      token: this.getJwt({ id: user.id })
+    }
   }
 
   private handleExceptionErrors (error: any): never {

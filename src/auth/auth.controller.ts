@@ -4,6 +4,8 @@ import { AuthGuard } from '@nestjs/passport'
 import { AuthService } from './auth.service'
 import { CreateUserDto, LoginUserDto, UpdateUserDto } from './dto'
 import { PaginationDto } from 'src/common/dtos/pagination.dto'
+import { GetUser } from './decorators'
+import { User } from './entities/user.entity'
 
 @Controller('auth')
 export class AuthController {
@@ -47,5 +49,13 @@ export class AuthController {
   @Param('id', ParseUUIDPipe) id: string
   ) {
     await this.authService.remove(id)
+  }
+
+  @Get('check-auth-status')
+  @UseGuards(AuthGuard())
+  checkAuthStatus (
+  @GetUser() user: User
+  ) {
+    return this.authService.checkAuthStatus(user)
   }
 }
