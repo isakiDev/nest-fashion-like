@@ -21,7 +21,6 @@ export class PostController {
   }
 
   @Get()
-  @UseGuards(AuthGuard())
   async findPosts (
   @Query() paginationDto: PaginationDto
   ) {
