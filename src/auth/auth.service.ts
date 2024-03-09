@@ -60,7 +60,7 @@ export class AuthService {
     delete user.emailVerified
 
     return {
-      ...user,
+      user: { ...user },
       token: this.getJwt({ id: user.id })
     }
   }
@@ -112,10 +112,10 @@ export class AuthService {
   }
 
   checkAuthStatus (user: User) {
-    const { id, name } = user
+    const { id, name, image, email } = user
 
     return {
-      user: { id, name },
+      user: { id, name, email, image },
       token: this.getJwt({ id: user.id })
     }
   }
