@@ -32,7 +32,7 @@ export class PostService {
       skip: offset,
       relations: ['user', 'comments', 'comments.user', 'likes', 'likes.user'],
       select: {
-        user: { id: true, name: true },
+        user: { id: true, name: true, email: true, image: true },
         likes: { id: true, user: { id: true, name: true } },
         comments: { id: true, comment: true, user: { id: true, name: true } }
       }
