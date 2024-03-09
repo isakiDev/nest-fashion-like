@@ -48,10 +48,13 @@ export class LikeService {
 
     if (!like) {
       const like = this.likeRepository.create({ user, post: { id: postId } })
-      await this.likeRepository.save(like)
-      return
+      const { id } = await this.likeRepository.save(like)
+
+      return { id }
     }
 
     await this.likeRepository.remove(like)
+
+    return { id: undefined }
   }
 }

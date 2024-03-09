@@ -15,7 +15,7 @@ export class LikeController {
   @Param('postId', ParseIntPipe) postId: number,
     @GetUser() user: User
   ) {
-    await this.likeService.toggleLike(postId, user)
+    return await this.likeService.toggleLike(postId, user)
   }
 
   // @Delete('/:postId')
