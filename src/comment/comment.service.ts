@@ -19,8 +19,19 @@ export class CommentService {
   async create (postId: number, user: User, createCommentDto: CreateCommentDto) {
     const post = await this.postService.findOne(postId)
 
-    const comment = this.commentRepository.create({ user, post, comment: createCommentDto.comment })
+    const newComment = this.commentRepository.create({ user, post, comment: createCommentDto.comment })
 
-    await this.commentRepository.save(comment)
+    const { id, comment } = await this.commentRepository.save(newComment)
+
+    return {
+      id,
+      comment,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        image: user.image
+      }
+    }
   }
 }

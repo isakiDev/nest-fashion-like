@@ -17,6 +17,6 @@ export class CommentController {
     @GetUser() user: User,
     @Body() createCommentDto: CreateCommentDto
   ) {
-    await this.commentService.create(postId, user, createCommentDto)
+    return await this.commentService.create(postId, user, createCommentDto)
   }
 }
