@@ -10,6 +10,6 @@ export class CreateUserDto {
   readonly email: string
 
   @IsString()
-  @MinLength(6)
+  @MinLength(5)
   readonly password: string
 }

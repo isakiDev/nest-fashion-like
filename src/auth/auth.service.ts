@@ -27,12 +27,12 @@ export class AuthService {
         password: BcryptAdapter.hashSync(password, 10)
       })
 
-      await this.userRepository.save(user)
+      const { id, name, email, image } = await this.userRepository.save(user)
 
-      delete user.password
+      // delete user.password
 
       return {
-        ...user,
+        user: { id, name, email, image },
         token: this.getJwt({ id: user.id })
 
       }
