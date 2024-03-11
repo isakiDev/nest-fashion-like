@@ -20,8 +20,9 @@ export class AuthController {
   @Body() createUserDto: CreateUserDto
   ) {
     const data = await this.authService.create(createUserDto)
+    const { name, email } = data.user
 
-    await this.emailService.sendMail({ email: data.user.email, name: data.user.name })
+    await this.emailService.sendUserConfirmation({ name, email, token: data.token })
 
     return data
   }
@@ -65,5 +66,12 @@ export class AuthController {
   @GetUser() user: User
   ) {
     return this.authService.checkAuthStatus(user)
+  }
+
+  @Get('confirm')
+  async verifyUserEmail (
+  @Query('token') token: string
+  ) {
+    return await this.authService.verifyUserEmail(token)
   }
 }

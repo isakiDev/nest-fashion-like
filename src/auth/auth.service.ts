@@ -1,6 +1,6 @@
 import { BadRequestException, ForbiddenException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { JwtService } from '@nestjs/jwt'
+import { JsonWebTokenError, JwtService, TokenExpiredError } from '@nestjs/jwt'
 
 import { Repository } from 'typeorm'
 
@@ -18,6 +18,29 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
+  // async create (createUserDto: CreateUserDto) {
+  //   const { password, ...data } = createUserDto
+
+  //   try {
+  //     const user = this.userRepository.create({
+  //       ...data,
+  //       password: BcryptAdapter.hashSync(password, 10)
+  //     })
+
+  //     const { id, name, email, image } = await this.userRepository.save(user)
+
+  //     // delete user.password
+
+  //     return {
+  //       user: { id, name, email, image },
+  //       token: this.getJwt({ id: user.id })
+
+  //     }
+  //   } catch (error) {
+  //     this.handleExceptionErrors(error)
+  //   }
+  // }
+
   async create (createUserDto: CreateUserDto) {
     const { password, ...data } = createUserDto
 
@@ -31,10 +54,15 @@ export class AuthService {
 
       // delete user.password
 
+      const token = this.getJwt({ id: user.id })
+
+      user.token = token
+
+      await this.userRepository.save(user)
+
       return {
         user: { id, name, email, image },
-        token: this.getJwt({ id: user.id })
-
+        token
       }
     } catch (error) {
       this.handleExceptionErrors(error)
@@ -106,11 +134,6 @@ export class AuthService {
     return newData
   }
 
-  private getJwt (payload: IJwtPayload) {
-    const token = this.jwtService.sign(payload)
-    return token
-  }
-
   checkAuthStatus (user: User) {
     const { id, name, image, email } = user
 
@@ -120,9 +143,47 @@ export class AuthService {
     }
   }
 
+  async verifyUserEmail (token: string) {
+    // TODO: refactor
+
+    this.verifyJwt(token)
+
+    const user = await this.userRepository.findOne({
+      where: { token }
+    })
+
+    if (!user) throw new UnauthorizedException('User not foundaaa')
+    if (user.emailVerified) throw new UnauthorizedException('User already verified')
+
+    user.emailVerified = true
+    user.token = null
+
+    await this.userRepository.save(user)
+
+    return {
+      message: 'Token verified',
+      statusCode: 200
+    }
+  }
+
+  private getJwt (payload: IJwtPayload) {
+    const token = this.jwtService.sign(payload)
+    return token
+  }
+
+  private verifyJwt (token: string) {
+    try {
+      this.jwtService.verify(token)
+    } catch (error) {
+      this.handleExceptionErrors(error)
+    }
+  }
+
   private handleExceptionErrors (error: any): never {
     // if (error.code === '23505') throw new BadRequestException(error.detail)
     if (error.code === '23505') throw new BadRequestException('Email already exists')
+    if (error instanceof JsonWebTokenError) throw new UnauthorizedException('Invalid token')
+    if (error instanceof TokenExpiredError) throw new UnauthorizedException('Token has expired')
 
     throw new InternalServerErrorException('Error: Check server logs')
   }
