@@ -7,4 +7,7 @@ export class SendEmailDto {
   @IsString()
   @MinLength(1)
   readonly name: string
+
+  @IsString()
+  readonly token: string
 }

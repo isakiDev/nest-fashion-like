@@ -9,18 +9,19 @@ export class EmailService {
     private readonly mailerService: MailerService
   ) {}
 
-  async sendMail (sendEmailDto: SendEmailDto) {
-    const { email, name } = sendEmailDto
+  async sendUserConfirmation (sendEmailDto: SendEmailDto) {
+    const { name, email, token } = sendEmailDto
 
+    console.log(token)
+
+    const url = `http://localhost:5173/auth/confirm?token=${token}`
     const subject = `Welcome ${name}`
 
     await this.mailerService.sendMail({
       to: email,
       subject,
-      template: './welcome',
-      context: { name }
+      template: './confirmation',
+      context: { name, url }
     })
-
-    return { msg: 'Check email' }
   }
 }

@@ -28,7 +28,7 @@ import { EmailController } from './email.controller'
           dir: join(__dirname, 'templates'),
           adapter: new EjsAdapter(),
           options: {
-            strict: true
+            strict: false
           }
         }
       }),
