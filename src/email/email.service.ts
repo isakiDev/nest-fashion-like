@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { MailerService } from '@nestjs-modules/mailer'
 
-import { type SendEmailDto } from './dtos'
+import { type SendUserConfirmationDto } from './dtos'
 
 @Injectable()
 export class EmailService {
@@ -9,8 +9,8 @@ export class EmailService {
     private readonly mailerService: MailerService
   ) {}
 
-  async sendUserConfirmation (sendEmailDto: SendEmailDto) {
-    const { name, email, token } = sendEmailDto
+  async sendUserConfirmation (sendUserConfirmationDto: SendUserConfirmationDto) {
+    const { name, email, token } = sendUserConfirmationDto
 
     console.log(token)
 
