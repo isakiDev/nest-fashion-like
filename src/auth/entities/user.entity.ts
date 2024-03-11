@@ -51,6 +51,11 @@ export class User {
   @IsString()
   readonly image?: string
 
+  @Column('text', {
+    default: null
+  })
+    token: string
+
   @Column('timestamp', {
     default: () => 'CURRENT_TIMESTAMP'
   })
