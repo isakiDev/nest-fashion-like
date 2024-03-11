@@ -1,5 +1,6 @@
 import { join } from 'path'
 import { Module } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { MailerModule } from '@nestjs-modules/mailer'
 import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter'
 
@@ -8,26 +9,30 @@ import { EmailController } from './email.controller'
 
 @Module({
   imports: [
-    MailerModule.forRoot({
-      transport: {
-        host: 'smtp.gmail.com',
-        // port: Number('465'), // 587 - 465
-        secure: false,
-        auth: {
-          user: 'gaspar.c.test@gmail.com',
-          pass: 'yujz tzed jjgq kcih'
+    // ? use forRootAsync because its need get .envs to connect
+    MailerModule.forRootAsync({
+      useFactory: async (config: ConfigService) => ({
+        transport: {
+          host: config.get('EMAIL_HOST'),
+          // port: Number('465'), // 587 - 465
+          secure: false,
+          auth: {
+            user: config.get('EMAIL_USER'),
+            pass: config.get('EMAIL_PASSWORD')
+          }
+        },
+        defaults: {
+          from: config.get('EMAIL_FROM')
+        },
+        template: {
+          dir: join(__dirname, 'templates'),
+          adapter: new EjsAdapter(),
+          options: {
+            strict: true
+          }
         }
-      },
-      defaults: {
-        from: '"From Name" <from@example.com>'
-      },
-      template: {
-        dir: join(__dirname, 'templates'),
-        adapter: new EjsAdapter(),
-        options: {
-          strict: true
-        }
-      }
+      }),
+      inject: [ConfigService]
     })
   ],
   controllers: [EmailController],

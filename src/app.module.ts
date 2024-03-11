@@ -6,10 +6,14 @@ import { AuthModule } from './auth/auth.module'
 import { PostModule } from './post/post.module'
 import { LikeModule } from './like/like.module'
 import { CommentModule } from './comment/comment.module'
+import { EmailModule } from './email/email.module'
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
+
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.DB_HOST,
@@ -20,10 +24,12 @@ import { CommentModule } from './comment/comment.module'
       autoLoadEntities: true,
       synchronize: true
     }),
+
     AuthModule,
     PostModule,
     LikeModule,
-    CommentModule
+    CommentModule,
+    EmailModule
   ]
 })
 export class AppModule {}

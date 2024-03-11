@@ -121,7 +121,8 @@ export class AuthService {
   }
 
   private handleExceptionErrors (error: any): never {
-    if (error.code === '23505') throw new BadRequestException(error.detail)
+    // if (error.code === '23505') throw new BadRequestException(error.detail)
+    if (error.code === '23505') throw new BadRequestException('Email already exists')
 
     throw new InternalServerErrorException('Error: Check server logs')
   }
