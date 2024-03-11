@@ -8,6 +8,7 @@ import { AuthService } from './auth.service'
 import { AuthController } from './auth.controller'
 import { User } from './entities/user.entity'
 import { JwtStrategy } from './strategies/jwt.strategy'
+import { EmailModule } from 'src/email/email.module'
 
 @Module({
   controllers: [AuthController],
@@ -30,7 +31,9 @@ import { JwtStrategy } from './strategies/jwt.strategy'
           }
         }
       }
-    })
+    }),
+
+    EmailModule
   ],
   exports: [
     PassportModule

@@ -6,16 +6,24 @@ import { CreateUserDto, LoginUserDto, UpdateUserDto } from './dto'
 import { PaginationDto } from 'src/common/dtos/pagination.dto'
 import { GetUser } from './decorators'
 import { User } from './entities/user.entity'
+import { EmailService } from '../email/email.service'
 
 @Controller('auth')
 export class AuthController {
-  constructor (private readonly authService: AuthService) {}
+  constructor (
+    private readonly authService: AuthService,
+    private readonly emailService: EmailService
+  ) {}
 
   @Post('register')
   async createUser (
   @Body() createUserDto: CreateUserDto
   ) {
-    return await this.authService.create(createUserDto)
+    const data = await this.authService.create(createUserDto)
+
+    await this.emailService.sendMail({ email: data.user.email, name: data.user.name })
+
+    return data
   }
 
   @Post('login')

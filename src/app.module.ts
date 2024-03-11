@@ -4,8 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { AuthModule } from './auth/auth.module'
 import { PostModule } from './post/post.module'
-import { LikeModule } from './like/like.module';
-import { CommentModule } from './comment/comment.module';
+import { LikeModule } from './like/like.module'
+import { CommentModule } from './comment/comment.module'
 
 @Module({
   imports: [
