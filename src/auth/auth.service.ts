@@ -152,8 +152,8 @@ export class AuthService {
       where: { token }
     })
 
-    if (!user) throw new UnauthorizedException('User not foundaaa')
-    if (user.emailVerified) throw new UnauthorizedException('User already verified')
+    if (!user) throw new NotFoundException('User not found')
+    if (user.emailVerified) throw new ForbiddenException('User already verified')
 
     user.emailVerified = true
     user.token = null
