@@ -12,8 +12,6 @@ export class EmailService {
   async sendUserConfirmation (sendUserConfirmationDto: SendUserConfirmationDto) {
     const { name, email, token } = sendUserConfirmationDto
 
-    console.log(token)
-
     const url = `http://localhost:5173/auth/confirm?token=${token}`
     const subject = `Welcome ${name}`
 

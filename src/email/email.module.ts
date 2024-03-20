@@ -11,6 +11,7 @@ import { EmailController } from './email.controller'
   imports: [
     // ? use forRootAsync because its need get .envs to connect
     MailerModule.forRootAsync({
+      inject: [ConfigService],
       useFactory: async (config: ConfigService) => ({
         transport: {
           host: config.get('EMAIL_HOST'),
@@ -31,8 +32,7 @@ import { EmailController } from './email.controller'
             strict: false
           }
         }
-      }),
-      inject: [ConfigService]
+      })
     })
   ],
   controllers: [EmailController],
