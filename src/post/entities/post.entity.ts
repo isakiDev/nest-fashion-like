@@ -12,10 +12,6 @@ export class Post {
 
   @Column('text')
   @IsString()
-  readonly title: string
-
-  @Column('text')
-  @IsString()
   readonly description: string
 
   @Column('text', {

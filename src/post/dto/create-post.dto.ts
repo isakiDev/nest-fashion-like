@@ -1,9 +1,10 @@
-import { IsString } from 'class-validator'
+import { IsOptional, IsString } from 'class-validator'
 
 export class CreatePostDto {
   @IsString()
-  readonly title: string
+  readonly description: string
 
   @IsString()
-  readonly description: string
+  @IsOptional()
+  readonly image?: string
 }
