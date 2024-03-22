@@ -7,6 +7,7 @@ import { PostModule } from './post/post.module'
 import { LikeModule } from './like/like.module'
 import { CommentModule } from './comment/comment.module'
 import { EmailModule } from './email/email.module'
+import { CloudinaryModule } from './cloudinary/cloudinary.module'
 
 @Module({
   imports: [
@@ -29,7 +30,8 @@ import { EmailModule } from './email/email.module'
     PostModule,
     LikeModule,
     CommentModule,
-    EmailModule
+    EmailModule,
+    CloudinaryModule
   ]
 })
 export class AppModule {}

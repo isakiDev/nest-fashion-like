@@ -34,7 +34,6 @@ export class AuthController {
     return await this.authService.login(loginUserDto)
   }
 
-  // TODO: add image to upload
   @Patch('/:id')
   @UseGuards(AuthGuard())
   async updateUser (
