@@ -15,10 +15,11 @@ export class PostService {
     private readonly postRespository: Repository<Post>
   ) {}
 
-  async create (createPostDto: CreatePostDto, user: User) {
+  async create (createPostDto: CreatePostDto, user: User, imageUrl: string) {
     const post = this.postRespository.create({
       ...createPostDto,
-      user
+      user,
+      image: imageUrl
     })
 
     return await this.postRespository.save(post)

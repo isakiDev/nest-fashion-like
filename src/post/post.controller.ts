@@ -1,23 +1,41 @@
-import { Controller, Get, Post, Body, UseGuards, Query } from '@nestjs/common'
+import { Controller, Get, Post, Body, UseGuards, Query, UseInterceptors, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator, UploadedFile } from '@nestjs/common'
+import { AuthGuard } from '@nestjs/passport'
+import { FileInterceptor } from '@nestjs/platform-express'
+
 import { PostService } from './post.service'
 import { CreatePostDto } from './dto'
-import { GetUser } from 'src/auth/decorators'
-import { User } from 'src/auth/entities/user.entity'
-import { AuthGuard } from '@nestjs/passport'
-import { PaginationDto } from 'src/common/dtos/pagination.dto'
+import { GetUser } from '../auth/decorators'
+import { User } from '../auth/entities/user.entity'
+import { PaginationDto } from '../common/dtos/pagination.dto'
+// import { UploadedFile } from '../common/decorators/UploadedFile.decorator'
+import { CloudinaryService } from '../cloudinary/cloudinary.service'
 
 @Controller('post')
 export class PostController {
-  constructor (private readonly postService: PostService) {}
+  constructor (
+    private readonly postService: PostService,
+    private readonly cloudinaryService: CloudinaryService
+  ) {}
 
-  // TODO: add image to upload
   @Post()
   @UseGuards(AuthGuard())
+  @UseInterceptors(FileInterceptor('file'))
   async createPost (
   @Body() createPostDto: CreatePostDto,
-    @GetUser() user: User
+    @GetUser() user: User,
+    @UploadedFile(
+      new ParseFilePipe({
+        fileIsRequired: true,
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }),
+          new FileTypeValidator({ fileType: /^image\/(jpeg|png|jpg|gif)$/ })
+        ]
+      })
+    ) file: Express.Multer.File
   ) {
-    return await this.postService.create(createPostDto, user)
+    const { secure_url: imageUrl } = await this.cloudinaryService.uploadFile(file)
+
+    return await this.postService.create(createPostDto, user, (imageUrl as string))
   }
 
   @Get()
