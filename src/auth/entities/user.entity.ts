@@ -54,7 +54,7 @@ export class User {
   @Column('text', {
     default: null
   })
-    token: string
+    emailToken?: string
 
   @Column('timestamp', {
     default: () => 'CURRENT_TIMESTAMP'
