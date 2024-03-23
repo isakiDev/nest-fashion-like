@@ -18,29 +18,6 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  // async create (createUserDto: CreateUserDto) {
-  //   const { password, ...data } = createUserDto
-
-  //   try {
-  //     const user = this.userRepository.create({
-  //       ...data,
-  //       password: BcryptAdapter.hashSync(password, 10)
-  //     })
-
-  //     const { id, name, email, image } = await this.userRepository.save(user)
-
-  //     // delete user.password
-
-  //     return {
-  //       user: { id, name, email, image },
-  //       token: this.getJwt({ id: user.id })
-
-  //     }
-  //   } catch (error) {
-  //     this.handleExceptionErrors(error)
-  //   }
-  // }
-
   async create (createUserDto: CreateUserDto) {
     const { password, ...data } = createUserDto
 
@@ -56,7 +33,7 @@ export class AuthService {
 
       const token = this.getJwt({ id: user.id })
 
-      user.token = token
+      user.emailToken = token
 
       await this.userRepository.save(user)
 
@@ -74,7 +51,7 @@ export class AuthService {
 
     const user = await this.userRepository.findOne({
       where: { email },
-      select: { id: true, name: true, email: true, password: true, emailVerified: true, isActive: true, image: true }
+      select: ['id', 'name', 'email', 'password', 'emailVerified', 'isActive', 'image']
     })
 
     if (!user) throw new UnauthorizedException('Credentials are not valid')
@@ -116,22 +93,32 @@ export class AuthService {
   }
 
   async update (id: string, updateUserDto: UpdateUserDto) {
-    const { password } = updateUserDto
+    const { currentPassword, newPassword, ...data } = updateUserDto
 
-    if (password) {
-      updateUserDto.password = BcryptAdapter.hashSync(password, 10)
-    }
-
-    const user = await this.userRepository.preload({
-      id,
-      ...updateUserDto
+    const user = await this.userRepository.findOne({
+      where: { id },
+      select: ['id', 'name', 'email', 'password', 'image', 'isActive']
     })
 
-    if (!user.isActive) throw new ForbiddenException('User is inactive')
+    if (!user) throw new NotFoundException(`User with id ${id} not found`)
+    if (!user.isActive) throw new UnauthorizedException('The user is inactive')
 
-    const { password: newPassword, ...newData } = await this.userRepository.save(user)
+    if (currentPassword && newPassword) {
+      if (!BcryptAdapter.compareSync(currentPassword, user.password)) throw new UnauthorizedException('Invalid password')
 
-    return newData
+      user.password = BcryptAdapter.hashSync(newPassword, 10)
+    }
+
+    const updatedUser = await this.userRepository.save({
+      ...user,
+      ...data
+    })
+
+    delete updatedUser.password
+    delete updatedUser.isActive
+    delete updatedUser.emailToken
+
+    return updatedUser
   }
 
   checkAuthStatus (user: User) {
@@ -143,20 +130,20 @@ export class AuthService {
     }
   }
 
-  async verifyUserEmail (token: string) {
+  async verifyUserEmail (emailToken: string) {
     // TODO: refactor
 
-    this.verifyJwt(token)
+    this.verifyJwt(emailToken)
 
     const user = await this.userRepository.findOne({
-      where: { token }
+      where: { emailToken }
     })
 
     if (!user) throw new NotFoundException('User not found')
     if (user.emailVerified) throw new ForbiddenException('User already verified')
 
     user.emailVerified = true
-    user.token = null
+    user.emailToken = null
 
     await this.userRepository.save(user)
 
