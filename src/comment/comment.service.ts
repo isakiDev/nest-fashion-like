@@ -11,9 +11,9 @@ import { type CreateCommentDto } from './dtos/create-comment.dto'
 @Injectable()
 export class CommentService {
   constructor (
-    private readonly postService: PostService,
     @InjectRepository(Comment)
-    private readonly commentRepository: Repository<Comment>
+    private readonly commentRepository: Repository<Comment>,
+    private readonly postService: PostService
   ) { }
 
   async create (postId: number, user: User, createCommentDto: CreateCommentDto) {

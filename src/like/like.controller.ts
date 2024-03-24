@@ -11,7 +11,7 @@ export class LikeController {
 
   @Post('/:postId')
   @UseGuards(AuthGuard())
-  async createLike (
+  async toggleLike (
   @Param('postId', ParseIntPipe) postId: number,
     @GetUser() user: User
   ) {

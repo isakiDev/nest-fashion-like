@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'ty
 
 import { User } from '../../auth/entities/user.entity'
 import { Like } from '../../like/entities/like.entity'
-import { Comment } from 'src/comment/entities/comment.entity'
+import { Comment } from '../../comment/entities/comment.entity'
 
 @Entity('posts')
 export class Post {

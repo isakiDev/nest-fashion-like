@@ -7,7 +7,6 @@ import { CreatePostDto } from './dto'
 import { GetUser } from '../auth/decorators'
 import { User } from '../auth/entities/user.entity'
 import { PaginationDto } from '../common/dtos/pagination.dto'
-// import { UploadedFile } from '../common/decorators/UploadedFile.decorator'
 import { CloudinaryService } from '../cloudinary/cloudinary.service'
 
 @Controller('post')
@@ -44,19 +43,4 @@ export class PostController {
   ) {
     return await this.postService.findAll(paginationDto)
   }
-
-  // @Get(':id')
-  // findOne (@Param('id') id: string) {
-  //   return this.postService.findOne(+id)
-  // }
-
-  // @Patch(':id')
-  // update (@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-  //   return this.postService.update(+id, updatePostDto)
-  // }
-
-  // @Delete(':id')
-  // remove (@Param('id') id: string) {
-  //   return this.postService.remove(+id)
-  // }
 }

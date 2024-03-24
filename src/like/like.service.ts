@@ -10,28 +10,10 @@ import { PostService } from '../post/post.service'
 @Injectable()
 export class LikeService {
   constructor (
-    private readonly postService: PostService,
     @InjectRepository(Like)
-    private readonly likeRepository: Repository<Like>
+    private readonly likeRepository: Repository<Like>,
+    private readonly postService: PostService
   ) {}
-
-  // async create (postId: number, user: User) {
-  //   const like = await this.findOne(postId, user)
-
-  //   if (like) throw new ConflictException('Already like')
-
-  //   const newLike = this.likeRepository.create({ user, post: { id: postId } })
-
-  //   await this.likeRepository.save(newLike)
-  // }
-
-  // async remove (postId: number, user: User) {
-  //   const like = await this.findOne(postId, user)
-
-  //   if (!like) throw new NotFoundException('Like not found')
-
-  //   await this.likeRepository.remove(like)
-  // }
 
   async findOne (postId: number, user: User) {
     const post = await this.postService.findOne(postId)
@@ -57,4 +39,21 @@ export class LikeService {
 
     return { id: undefined }
   }
+  // async create (postId: number, user: User) {
+  //   const like = await this.findOne(postId, user)
+
+  //   if (like) throw new ConflictException('Already like')
+
+  //   const newLike = this.likeRepository.create({ user, post: { id: postId } })
+
+  //   await this.likeRepository.save(newLike)
+  // }
+
+  // async remove (postId: number, user: User) {
+  //   const like = await this.findOne(postId, user)
+
+  //   if (!like) throw new NotFoundException('Like not found')
+
+  //   await this.likeRepository.remove(like)
+  // }
 }

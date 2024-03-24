@@ -61,7 +61,7 @@ export class AuthService {
     if (!user.isActive) throw new ForbiddenException('User is inactive')
     if (!user.emailVerified) throw new ForbiddenException('User unverified')
 
-    // TODO: refactor isActive
+    // TODO: refactor
     delete user.password
     delete user.isActive
     delete user.emailVerified

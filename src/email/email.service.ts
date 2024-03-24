@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { MailerService } from '@nestjs-modules/mailer'
 
-import { type SendUserConfirmationDto } from './dtos'
+// import { type SendUserConfirmationDto } from './dtos'
 
 @Injectable()
 export class EmailService {
@@ -9,17 +9,17 @@ export class EmailService {
     private readonly mailerService: MailerService
   ) {}
 
-  async sendUserConfirmation (sendUserConfirmationDto: SendUserConfirmationDto) {
-    const { name, email, token } = sendUserConfirmationDto
+  // async sendUserConfirmation (sendUserConfirmationDto: SendUserConfirmationDto) {
+  //   const { name, email, token } = sendUserConfirmationDto
 
-    const url = `http://localhost:5173/auth/confirm?token=${token}`
-    const subject = `Welcome ${name}`
+  //   const url = `http://localhost:5173/auth/confirm?token=${token}`
+  //   const subject = `Welcome ${name}`
 
-    await this.mailerService.sendMail({
-      to: email,
-      subject,
-      template: './confirmation',
-      context: { name, url }
-    })
-  }
+  //   await this.mailerService.sendMail({
+  //     to: email,
+  //     subject,
+  //     template: './confirmation',
+  //     context: { name, url }
+  //   })
+  // }
 }
