@@ -1,4 +1,3 @@
-import { IsBoolean, IsDate, IsString } from 'class-validator'
 import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, OneToMany } from 'typeorm'
 
 import { Like } from '../../like/entities/like.entity'
@@ -11,31 +10,26 @@ export class User {
   readonly id: string
 
   @Column('text')
-  @IsString()
   readonly name: string
 
   @Column('text', {
     unique: true
   })
-  @IsString()
     email: string
 
   @Column('text', {
     select: false
   })
-  @IsString()
     password: string
 
   @Column('bool', {
     default: false
   })
-  @IsBoolean()
     emailVerified?: boolean
 
   @Column('bool', {
     default: true
   })
-  @IsBoolean()
     isActive?: boolean
 
   @Column('text', {
@@ -48,7 +42,6 @@ export class User {
   @Column('text', {
     default: 'https://res.cloudinary.com/dzn3nempv/image/upload/v1709931089/fashion-like/users/smtcqxhlfpqjqwbeqvf4.png'
   })
-  @IsString()
   readonly image?: string
 
   @Column('text', {
@@ -59,13 +52,11 @@ export class User {
   @Column('timestamp', {
     default: () => 'CURRENT_TIMESTAMP'
   })
-  @IsDate()
     createdAt?: Date
 
   @Column('timestamp', {
     default: () => 'CURRENT_TIMESTAMP'
   })
-  @IsDate()
   readonly updatedAt?: Date
 
   @OneToMany(
