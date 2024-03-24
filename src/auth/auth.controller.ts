@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, Query, UseGuards } from '@nestjs/common'
+import { Body, Controller, Delete, FileTypeValidator, Get, MaxFileSizeValidator, Param, ParseFilePipe, ParseUUIDPipe, Patch, Post, Query, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common'
+import { FileInterceptor } from '@nestjs/platform-express'
 import { AuthGuard } from '@nestjs/passport'
 
 import { AuthService } from './auth.service'
 import { CreateUserDto, LoginUserDto, UpdateUserDto } from './dto'
-import { PaginationDto } from 'src/common/dtos/pagination.dto'
+import { PaginationDto } from '../common/dtos/pagination.dto'
 import { GetUser } from './decorators'
 import { User } from './entities/user.entity'
 import { EmailService } from '../email/email.service'
@@ -13,6 +14,7 @@ export class AuthController {
   constructor (
     private readonly authService: AuthService,
     private readonly emailService: EmailService
+
   ) {}
 
   @Post('register')
@@ -41,6 +43,24 @@ export class AuthController {
     @Body() updateUserDto: UpdateUserDto
   ) {
     return await this.authService.update(id, updateUserDto)
+  }
+
+  @Patch(':id/profile-picture')
+  @UseGuards(AuthGuard())
+  @UseInterceptors(FileInterceptor('file'))
+  async updateProfilePicture (
+  @Param('id', ParseUUIDPipe) id: string,
+    @UploadedFile(
+      new ParseFilePipe({
+        fileIsRequired: true,
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }),
+          new FileTypeValidator({ fileType: /^image\/(jpeg|png|jpg|gif)$/ })
+        ]
+      })
+    ) file: Express.Multer.File
+  ) {
+    return await this.authService.updateProfilePicture(id, file)
   }
 
   @Get()

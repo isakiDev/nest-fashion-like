@@ -8,7 +8,8 @@ import { AuthService } from './auth.service'
 import { AuthController } from './auth.controller'
 import { User } from './entities/user.entity'
 import { JwtStrategy } from './strategies/jwt.strategy'
-import { EmailModule } from 'src/email/email.module'
+import { EmailModule } from '../email/email.module'
+import { CloudinaryModule } from '../cloudinary/cloudinary.module'
 
 @Module({
   controllers: [AuthController],
@@ -33,7 +34,8 @@ import { EmailModule } from 'src/email/email.module'
       }
     }),
 
-    EmailModule
+    EmailModule,
+    CloudinaryModule
   ],
   exports: [
     PassportModule

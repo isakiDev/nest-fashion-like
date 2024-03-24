@@ -9,13 +9,15 @@ import { BcryptAdapter } from '../common/adapters/bcrypt.adapter'
 import { type LoginUserDto, type CreateUserDto, type UpdateUserDto } from './dto'
 import { type IJwtPayload } from './interfaces'
 import { type PaginationDto } from '../common/dtos/pagination.dto'
+import { CloudinaryService } from '../cloudinary/cloudinary.service'
 
 @Injectable()
 export class AuthService {
   constructor (
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
+    private readonly cloudinaryService: CloudinaryService
   ) {}
 
   async create (createUserDto: CreateUserDto) {
@@ -151,6 +153,14 @@ export class AuthService {
       message: 'Token verified',
       statusCode: 200
     }
+  }
+
+  async updateProfilePicture (id: string, file: Express.Multer.File) {
+    await this.findOne(id)
+
+    const { secure_url: secureUrl } = await this.cloudinaryService.uploadFile(file, 'fashion-like/users')
+
+    return secureUrl
   }
 
   private getJwt (payload: IJwtPayload) {
