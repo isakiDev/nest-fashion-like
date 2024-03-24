@@ -1,4 +1,3 @@
-import { IsDate, IsString } from 'class-validator'
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 
 import { User } from '../../auth/entities/user.entity'
@@ -11,25 +10,21 @@ export class Post {
   readonly id: number
 
   @Column('text')
-  @IsString()
   readonly description: string
 
   @Column('text', {
     default: 'default.jpg'
   })
-  @IsString()
   readonly image?: string
 
   @Column('timestamp', {
     default: () => 'CURRENT_TIMESTAMP'
   })
-  @IsDate()
   readonly createdAt?: Date
 
   @Column('timestamp', {
     default: () => 'CURRENT_TIMESTAMP'
   })
-  @IsDate()
   readonly updatedAt?: Date
 
   @ManyToOne(
