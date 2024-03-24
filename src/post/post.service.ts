@@ -7,12 +7,14 @@ import { type CreatePostDto } from './dto/create-post.dto'
 import { type User } from '../auth/entities/user.entity'
 import { Post } from './entities/post.entity'
 import { type PaginationDto } from '../common/dtos/pagination.dto'
+import { CloudinaryService } from '../cloudinary/cloudinary.service'
 
 @Injectable()
 export class PostService {
   constructor (
     @InjectRepository(Post)
-    private readonly postRespository: Repository<Post>
+    private readonly postRespository: Repository<Post>,
+    private readonly cloudinaryService: CloudinaryService
   ) {}
 
   async create (createPostDto: CreatePostDto, user: User, imageUrl: string) {

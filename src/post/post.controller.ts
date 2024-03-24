@@ -33,7 +33,7 @@ export class PostController {
       })
     ) file: Express.Multer.File
   ) {
-    const { secure_url: imageUrl } = await this.cloudinaryService.uploadFile(file)
+    const { secure_url: imageUrl } = await this.cloudinaryService.uploadFile(file, 'fashion-like')
 
     return await this.postService.create(createPostDto, user, (imageUrl as string))
   }
