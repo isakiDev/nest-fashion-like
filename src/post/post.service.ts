@@ -6,7 +6,7 @@ import { Repository } from 'typeorm'
 import { type CreatePostDto } from './dto/create-post.dto'
 import { type User } from '../auth/entities/user.entity'
 import { Post } from './entities/post.entity'
-import { type PaginationDto } from '../common/dtos/pagination.dto'
+import { type PaginationDto } from '../common'
 import { CloudinaryService } from '../cloudinary/cloudinary.service'
 
 @Injectable()
@@ -17,7 +17,9 @@ export class PostService {
     private readonly cloudinaryService: CloudinaryService
   ) {}
 
-  async create (createPostDto: CreatePostDto, user: User, imageUrl: string) {
+  async create (createPostDto: CreatePostDto, user: User, file: Express.Multer.File) {
+    const { secure_url: imageUrl } = await this.cloudinaryService.uploadFile(file, 'fashion-like')
+
     const post = this.postRespository.create({
       ...createPostDto,
       user,

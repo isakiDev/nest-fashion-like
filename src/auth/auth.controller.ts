@@ -4,7 +4,7 @@ import { AuthGuard } from '@nestjs/passport'
 
 import { AuthService } from './auth.service'
 import { CreateUserDto, LoginUserDto, UpdateUserDto } from './dto'
-import { PaginationDto } from '../common/dtos/pagination.dto'
+import { PaginationDto } from '../common'
 import { GetUser } from './decorators'
 import { User } from './entities/user.entity'
 import { EmailService } from '../email/email.service'

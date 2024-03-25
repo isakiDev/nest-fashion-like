@@ -5,10 +5,10 @@ import { JsonWebTokenError, JwtService, TokenExpiredError } from '@nestjs/jwt'
 import { Repository } from 'typeorm'
 
 import { User } from './entities/user.entity'
-import { BcryptAdapter } from '../common/adapters/bcrypt.adapter'
+import { BcryptAdapter } from '../common'
 import { type LoginUserDto, type CreateUserDto, type UpdateUserDto } from './dto'
 import { type IJwtPayload } from './interfaces'
-import { type PaginationDto } from '../common/dtos/pagination.dto'
+import { type PaginationDto } from '../common'
 import { CloudinaryService } from '../cloudinary/cloudinary.service'
 
 @Injectable()

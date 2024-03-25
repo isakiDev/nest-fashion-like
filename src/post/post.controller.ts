@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UseGuards, Query, UseInterceptors, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator, UploadedFile } from '@nestjs/common'
+import { Controller, Get, Post, Body, UseGuards, Query, UseInterceptors, UploadedFile, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { FileInterceptor } from '@nestjs/platform-express'
 
@@ -6,14 +6,12 @@ import { PostService } from './post.service'
 import { CreatePostDto } from './dto'
 import { GetUser } from '../auth/decorators'
 import { User } from '../auth/entities/user.entity'
-import { PaginationDto } from '../common/dtos/pagination.dto'
-import { CloudinaryService } from '../cloudinary/cloudinary.service'
+import { PaginationDto } from 'src/common'
 
 @Controller('post')
 export class PostController {
   constructor (
-    private readonly postService: PostService,
-    private readonly cloudinaryService: CloudinaryService
+    private readonly postService: PostService
   ) {}
 
   @Post()
@@ -32,9 +30,7 @@ export class PostController {
       })
     ) file: Express.Multer.File
   ) {
-    const { secure_url: imageUrl } = await this.cloudinaryService.uploadFile(file, 'fashion-like')
-
-    return await this.postService.create(createPostDto, user, (imageUrl as string))
+    return await this.postService.create(createPostDto, user, file)
   }
 
   @Get()
