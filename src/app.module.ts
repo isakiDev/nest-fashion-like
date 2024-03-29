@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 
 import { AuthModule } from './auth/auth.module'
 import { PostModule } from './post/post.module'
-import { LikeModule } from './like/like.module'
+import { ReactionModule } from './reaction/reaction.module'
 import { CommentModule } from './comment/comment.module'
 import { EmailModule } from './email/email.module'
 import { CloudinaryModule } from './cloudinary/cloudinary.module'
@@ -28,7 +28,7 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module'
 
     AuthModule,
     PostModule,
-    LikeModule,
+    ReactionModule,
     CommentModule,
     EmailModule,
     CloudinaryModule

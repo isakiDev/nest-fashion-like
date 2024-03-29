@@ -12,7 +12,7 @@ export class CommentController {
 
   @Post('/:postId')
   @UseGuards(AuthGuard())
-  async createLike (
+  async createComment (
   @Param('postId', ParseIntPipe) postId: number,
     @GetUser() user: User,
     @Body() createCommentDto: CreateCommentDto

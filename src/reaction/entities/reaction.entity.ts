@@ -2,10 +2,11 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 
 import { User } from '../../auth/entities/user.entity'
 import { Post } from '../../post/entities/post.entity'
+import { TypeReaction } from '../interfaces/reaction.interface'
 
-@Entity('likes')
+@Entity('reactions')
 // @Unique(['user', 'post'])
-export class Like {
+export class Reaction {
   @PrimaryGeneratedColumn('increment')
   readonly id: number
 
@@ -18,6 +19,11 @@ export class Like {
     default: () => 'CURRENT_TIMESTAMP'
   })
   readonly updatedAt?: Date
+
+  @Column('enum', {
+    enum: TypeReaction
+  })
+  readonly type: TypeReaction
 
   @ManyToOne(
     () => User,

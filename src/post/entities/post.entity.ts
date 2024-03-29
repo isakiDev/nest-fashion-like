@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 
 import { User } from '../../auth/entities/user.entity'
-import { Like } from '../../like/entities/like.entity'
+import { Reaction } from '../../reaction/entities/reaction.entity'
 import { Comment } from '../../comment/entities/comment.entity'
 
 @Entity('posts')
@@ -34,10 +34,10 @@ export class Post {
     user: User
 
   @OneToMany(
-    () => Like,
-    (likes) => likes.post
+    () => Reaction,
+    (reaction) => reaction.post
   )
-    likes: Like[]
+    reactions: Reaction[]
 
   @OneToMany(
     () => Comment,

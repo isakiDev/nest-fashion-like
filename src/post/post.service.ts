@@ -35,10 +35,10 @@ export class PostService {
     const posts = await this.postRespository.find({
       take: limit,
       skip: offset,
-      relations: ['user', 'comments', 'comments.user', 'likes', 'likes.user'],
+      relations: ['user', 'comments', 'comments.user', 'reactions', 'reactions.user'],
       select: {
         user: { id: true, name: true, email: true, image: true },
-        likes: { id: true, user: { id: true, name: true } },
+        reactions: { id: true, type: true, user: { id: true, name: true } },
         comments: { id: true, comment: true, user: { id: true, name: true, email: true, image: true } }
       }
     })

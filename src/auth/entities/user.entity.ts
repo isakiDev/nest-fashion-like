@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, OneToMany } from 'typeorm'
 
-import { Like } from '../../like/entities/like.entity'
+import { Reaction } from '../../reaction/entities/reaction.entity'
 import { Post } from '../../post/entities/post.entity'
 import { Comment } from 'src/comment/entities/comment.entity'
 
@@ -66,10 +66,10 @@ export class User {
     post: Post
 
   @OneToMany(
-    () => Like,
-    (like) => like.user
+    () => Reaction,
+    (reaction) => reaction.user
   )
-    like: Like
+    reaction: Reaction
 
   @OneToMany(
     () => Comment,
