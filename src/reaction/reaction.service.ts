@@ -43,7 +43,7 @@ export class ReactionService {
 
     await this.reactionRepository.remove(reaction)
 
-    return null
+    return {}
   }
 
   // async toggleLike (postId: number, user: User) {
