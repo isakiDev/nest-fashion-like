@@ -3,6 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, One
 import { Reaction } from '../../reaction/entities/reaction.entity'
 import { Post } from '../../post/entities/post.entity'
 import { Comment } from 'src/comment/entities/comment.entity'
+import { Roles } from '../interfaces/roles.interface'
 
 @Entity('users')
 export class User {
@@ -34,9 +35,9 @@ export class User {
 
   @Column('text', {
     array: true,
-    default: ['user']
+    default: [Roles.USER]
   })
-  readonly roles?: string[]
+    roles?: string[]
 
   // TODO: load url from .env
   @Column('text', {
