@@ -27,5 +27,6 @@ pnpm start:dev
 
 # Tasks
 - Fix createdAt and updatedAt to have a correct date
-- Create decorador to upload files in controllers
-- Think about remove email service injection in controller
+- Think about remove email service injection in auth controller
+- Sort by most recent dates
+- Add validations to admin

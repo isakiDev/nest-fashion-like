@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, UseGuards, Query, UseInterceptors, UploadedFile, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator } from '@nestjs/common'
+import { Controller, Get, Post, Body, UseGuards, Query, UseInterceptors, UploadedFile, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator, Param, Delete, ParseIntPipe } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { FileInterceptor } from '@nestjs/platform-express'
 
@@ -38,5 +38,13 @@ export class PostController {
   @Query() paginationDto: PaginationDto
   ) {
     return await this.postService.findAll(paginationDto)
+  }
+
+  // TODO: ADD ADMIN VALIDATION
+  @Delete('/:id')
+  async deletePost (
+  @Param('id', ParseIntPipe) id: number
+  ) {
+    await this.postService.delete(+id)
   }
 }

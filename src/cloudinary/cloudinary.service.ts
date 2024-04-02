@@ -20,4 +20,8 @@ export class CloudinaryService {
       ).end(file.buffer)
     })
   }
+
+  async deleteFile (id: string, prefix?: string) {
+    await v2.api.delete_resources([`${prefix}/${id}`])
+  }
 }

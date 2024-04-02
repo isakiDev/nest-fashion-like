@@ -53,4 +53,12 @@ export class PostService {
 
     return post
   }
+
+  async delete (id: number) {
+    const { image } = await this.findOne(id)
+    const imageId = image.split('/').at(-1).split('.').at(0)
+
+    await this.postRespository.delete(id)
+    await this.cloudinaryService.deleteFile(imageId, 'fashion-like')
+  }
 }
