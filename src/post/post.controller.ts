@@ -4,9 +4,10 @@ import { FileInterceptor } from '@nestjs/platform-express'
 
 import { PostService } from './post.service'
 import { CreatePostDto } from './dto'
-import { GetUser } from '../auth/decorators'
+import { Auth, GetUser } from '../auth/decorators'
 import { User } from '../auth/entities/user.entity'
-import { PaginationDto } from 'src/common'
+import { PaginationDto } from '../common'
+import { ValidRoles } from '../auth/interfaces'
 
 @Controller('post')
 export class PostController {
@@ -40,8 +41,8 @@ export class PostController {
     return await this.postService.findAll(paginationDto)
   }
 
-  // TODO: ADD ADMIN VALIDATION
   @Delete('/:id')
+  @Auth(ValidRoles.admin)
   async deletePost (
   @Param('id', ParseIntPipe) id: number
   ) {

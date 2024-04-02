@@ -2,8 +2,8 @@ import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, One
 
 import { Reaction } from '../../reaction/entities/reaction.entity'
 import { Post } from '../../post/entities/post.entity'
-import { Comment } from 'src/comment/entities/comment.entity'
-import { Roles } from '../interfaces/roles.interface'
+import { Comment } from '../../comment/entities/comment.entity'
+import { Roles } from '../interfaces'
 
 @Entity('users')
 export class User {
