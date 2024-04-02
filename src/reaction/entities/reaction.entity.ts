@@ -33,7 +33,8 @@ export class Reaction {
 
   @ManyToOne(
     () => Post,
-    (post) => post.id
+    (post) => post.id,
+    { onDelete: 'CASCADE' }
   )
     post: Post
 }
