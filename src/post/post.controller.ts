@@ -1,9 +1,9 @@
-import { Controller, Get, Post, Body, UseGuards, Query, UseInterceptors, UploadedFile, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator, Param, Delete, ParseIntPipe } from '@nestjs/common'
+import { Controller, Get, Post, Body, UseGuards, Query, UseInterceptors, UploadedFile, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator, Param, Delete, ParseIntPipe, Patch } from '@nestjs/common'
 import { AuthGuard } from '@nestjs/passport'
 import { FileInterceptor } from '@nestjs/platform-express'
 
 import { PostService } from './post.service'
-import { CreatePostDto } from './dto'
+import { CreatePostDto, UpdatePostDto } from './dto'
 import { Auth, GetUser } from '../auth/decorators'
 import { User } from '../auth/entities/user.entity'
 import { PaginationDto } from '../common'
@@ -47,5 +47,15 @@ export class PostController {
   @Param('id', ParseIntPipe) id: number
   ) {
     await this.postService.delete(+id)
+  }
+
+  @Patch('/:id')
+  @Auth()
+  async updatePost (
+  @Param('id', ParseIntPipe) id: number,
+    @GetUser() user: User,
+    @Body() updatePostDto: UpdatePostDto
+  ) {
+    return await this.postService.update(id, updatePostDto, user)
   }
 }

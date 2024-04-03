@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common'
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { Repository } from 'typeorm'
@@ -8,6 +8,7 @@ import { type User } from '../auth/entities/user.entity'
 import { Post } from './entities/post.entity'
 import { type PaginationDto } from '../common'
 import { CloudinaryService } from '../cloudinary/cloudinary.service'
+import { type UpdatePostDto } from './dto'
 
 @Injectable()
 export class PostService {
@@ -40,7 +41,8 @@ export class PostService {
         user: { id: true, name: true, email: true, image: true },
         reactions: { id: true, type: true, user: { id: true, name: true } },
         comments: { id: true, comment: true, user: { id: true, name: true, email: true, image: true } }
-      }
+      },
+      order: { createdAt: 'DESC' }
     })
 
     return posts
@@ -60,5 +62,27 @@ export class PostService {
 
     await this.postRespository.delete(id)
     await this.cloudinaryService.deleteFile(imageId, 'fashion-like')
+  }
+
+  async update (id: number, updatePostDto: UpdatePostDto, user: User) {
+    const post = await this.postRespository.findOne({
+      where: { id },
+      relations: ['user'],
+      select: ['user']
+    })
+
+    if (user.id !== post.user.id) throw new UnauthorizedException('The post does not belong to this user')
+
+    const updatedPost = {
+      ...post,
+      ...updatePostDto,
+      updatedAt: new Date(Date.now()).toISOString()
+    }
+
+    await this.postRespository.save(updatedPost)
+
+    delete updatedPost.user
+
+    return updatedPost
   }
 }
