@@ -37,7 +37,11 @@ export class ReactionService {
     }
 
     if (reaction.type !== type) {
-      await this.reactionRepository.update(reaction.id, { user, type })
+      await this.reactionRepository.update(reaction.id, {
+        user,
+        type,
+        updatedAt: new Date(Date.now()).toISOString()
+      })
       return { id: reaction.id, type }
     }
 
@@ -45,37 +49,4 @@ export class ReactionService {
 
     return {}
   }
-
-  // async toggleLike (postId: number, user: User) {
-  //   const like = await this.findOne(postId, user)
-
-  //   if (!like) {
-  //     const like = this.likeRepository.create({ user, post: { id: postId } })
-  //     const { id } = await this.likeRepository.save(like)
-
-  //     return { id }
-  //   }
-
-  //   await this.likeRepository.remove(like)
-
-  //   return { id: undefined }
-  // }
-
-  // async create (postId: number, user: User) {
-  //   const like = await this.findOne(postId, user)
-
-  //   if (like) throw new ConflictException('Already like')
-
-  //   const newLike = this.likeRepository.create({ user, post: { id: postId } })
-
-  //   await this.likeRepository.save(newLike)
-  // }
-
-  // async remove (postId: number, user: User) {
-  //   const like = await this.findOne(postId, user)
-
-  //   if (!like) throw new NotFoundException('Like not found')
-
-  //   await this.likeRepository.remove(like)
-  // }
 }
