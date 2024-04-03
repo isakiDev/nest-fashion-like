@@ -26,7 +26,5 @@ pnpm start:dev
 - [Code FrontEnd](https://github.com/isakiDev/react-fashion-like)
 
 # Tasks
-- Fix createdAt and updatedAt to have a correct date
 - Think about remove email service injection in auth controller
-- Sort by most recent dates
-- Add validations to admin
+- Add update post

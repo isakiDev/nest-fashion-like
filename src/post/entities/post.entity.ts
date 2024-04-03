@@ -23,7 +23,7 @@ export class Post {
   readonly createdAt?: Date
 
   @Column('timestamp', {
-    default: () => 'CURRENT_TIMESTAMP'
+    default: null
   })
   readonly updatedAt?: Date
 

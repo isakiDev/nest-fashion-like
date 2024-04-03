@@ -16,7 +16,7 @@ export class Reaction {
   readonly createdAt?: Date
 
   @Column('timestamp', {
-    default: () => 'CURRENT_TIMESTAMP'
+    default: null
   })
   readonly updatedAt?: Date
 
