@@ -27,4 +27,3 @@ pnpm start:dev
 
 # Tasks
 - Think about remove email service injection in auth controller
-- Add update post
