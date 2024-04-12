@@ -7,7 +7,7 @@ async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     const logger = new common_1.Logger('main');
     app.enableCors({
-        origin: ['http://localhost:5173, https://fashion-like-isakidev.netlify.app']
+        origin: ['http://localhost:5173', 'https://fashion-like-isakidev.netlify.app']
     });
     app.setGlobalPrefix('api');
     app.useGlobalPipes(new common_1.ValidationPipe({
