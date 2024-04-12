@@ -28,7 +28,7 @@ exports.AppModule = AppModule = __decorate([
             typeorm_1.TypeOrmModule.forRoot({
                 ssl: process.env.STAGE === 'prod',
                 extra: {
-                    ssl: process.env.STAGE === 'prod'
+                    ssl: process.env.STAGE !== 'prod'
                         ? { rejectUnauthorized: false }
                         : null
                 },
