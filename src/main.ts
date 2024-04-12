@@ -7,7 +7,7 @@ async function bootstrap () {
   const logger = new Logger('main')
 
   app.enableCors({
-    origin: ['http://localhost:5173, https://fashion-like-isakidev.netlify.app']
+    origin: ['http://localhost:5173', 'https://fashion-like-isakidev.netlify.app']
   })
 
   app.setGlobalPrefix('api')
