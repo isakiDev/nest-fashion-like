@@ -24,6 +24,3 @@ pnpm start:dev
 
 # 🔗 Links
 - [Code FrontEnd](https://github.com/isakiDev/react-fashion-like)
-
-# Tasks
-- Think about remove email service injection in auth controller
