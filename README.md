@@ -12,7 +12,7 @@ git clone 'link'
 pnpm i
 ```
 3. Clone file ```.env.template``` and rename the copy to ```.env```
-4. Fill data into environment variables `(.env)`
+4. Fill data into environment variables ```.env```
 5. Up database
 ```
 docker compose up -d
@@ -24,6 +24,3 @@ pnpm start:dev
 
 # 🔗 Links
 - [Code FrontEnd](https://github.com/isakiDev/react-fashion-like)
-
-# Tasks
-- Think about remove email service injection in auth controller
