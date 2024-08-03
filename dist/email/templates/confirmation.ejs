@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Confirmation</title>
+</head>
+
+<body>
+  <div style="text-align: center; padding: 20px;">
+    <h2>Welcome <%= name %>!</h2>
+    <p>Thank you for joining to Fashion Like. Please click the link below to confirm your email:</p>
+    <a href="<%= url %>"
+      style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border-radius: 5px;">Confirm
+      Email</a>
+    <p>If the button above does not work, you can also copy and paste the following URL into your browser:</p>
+    <p>
+      <%= url %>
+    </p>
+    <p>Thank you for using Fashion Like!</p>
+  </div>
+</body>
+
+</html>
