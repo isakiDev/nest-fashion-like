@@ -106,7 +106,7 @@ export class AuthService {
     if (!user.isActive) throw new UnauthorizedException('The user is inactive')
 
     // validation to default user credentials
-    if (user.id === '0450bd96-8965-47ec-b397-d67bd5037769') throw new UnauthorizedException('Default user cannot be updated')
+    if (user.id === '66442f80-4814-4042-8795-5d7b3df67943') throw new UnauthorizedException('Default user cannot be updated')
 
     if (currentPassword && newPassword) {
       if (!BcryptAdapter.compareSync(currentPassword, user.password)) throw new UnauthorizedException('Invalid password')
